@@ -164,10 +164,21 @@ deps-update: ; $(info  Updating dependencies...) @ ## Update dependencies
 
 .PHONY: image
 image: ; $(info Building Docker image...) @ ## Build SR-IOV Network device plugin docker image
+# Default: builds with bundled nicctl versions (1.117.5-a-77, 1.117.5-a-147) with bootstrap 1.117.5-a-147
+# Customize nicctl versions by overriding DOCKERARGS:
+#   make image DOCKERARGS="--build-arg AINIC_VERSIONS=1.117.5-a-147"
+#   make image DOCKERARGS="--build-arg AINIC_VERSIONS=1.117.5-a-56,1.117.5-a-77,1.117.5-a-88,1.117.5-a-103,1.117.5-a-147 --build-arg BOOTSTRAP_VERSION=1.117.5-a-147"
 ifeq ($(HOURLY_TAG_LABEL),)
-	$Q docker build -t $(IMG) -f $(DOCKERFILE)  $(CURDIR) $(DOCKERARGS)
+	$Q docker build \
+		--build-arg AINIC_VERSIONS="1.117.5-a-77,1.117.5-a-147" \
+		--build-arg BOOTSTRAP_VERSION="1.117.5-a-147" \
+		-t $(IMG) -f $(DOCKERFILE) $(CURDIR) $(DOCKERARGS)
 else
-	$Q docker build --label HOURLY_TAG_LABEL=$(HOURLY_TAG_LABEL) -t $(IMG) -f $(DOCKERFILE)  $(CURDIR) $(DOCKERARGS)
+	$Q docker build \
+		--build-arg AINIC_VERSIONS="1.117.5-a-77,1.117.5-a-147" \
+		--build-arg BOOTSTRAP_VERSION="1.117.5-a-147" \
+		--label HOURLY_TAG_LABEL=$(HOURLY_TAG_LABEL) \
+		-t $(IMG) -f $(DOCKERFILE) $(CURDIR) $(DOCKERARGS)
 endif
 
 .PHONY: docker-save

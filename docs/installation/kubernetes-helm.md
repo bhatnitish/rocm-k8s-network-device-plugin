@@ -8,11 +8,15 @@ This page explains how to install the AMD Network Device Plugin for Kubernetes u
 - Helm v3.2.0 or later
 - `kubectl` command-line tool configured with access to the cluster
 - Nodes equipped with AMD AINICs
-- AMD AINIC drivers, `nicctl` tool installed on the nodes
+- AMD AINIC drivers, `nicctl` tool installed on the nodes (or bundled in image for multi-version support)
 - A compatible CNI meta-plugin that supports additional network attachments (for example, Multus) installed and configured in the cluster
 - The `NetworkAttachmentDefinition` custom resource definitions (CRDs) and associated RBAC available in the cluster
 
 Refer to the [README](../../README.md) for more details on these runtime prerequisites and example configurations.
+
+### Multi-Version Image Support
+
+Starting with v1.3.0, container images support multiple nicctl versions bundled together. This allows a single image to work across clusters with different NIC firmware versions through automatic firmware detection at startup. See the [README Multi-Version nicctl Support](../../README.md#multi-version-nicctl-support) section for build details.
 
 ## Installation
 
