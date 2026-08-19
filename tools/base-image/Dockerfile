@@ -29,13 +29,15 @@ RUN apt-get update && apt-get install -y \
   make python3-sphinx python3-pip \
   git && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# download go1.23.4
+# download go1.23.4 (sha256 pinned)
 RUN wget https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
+    echo "6924efde5de86fe277676e929dc9917d466efa02fb934197bc2eba35d5680971  go1.23.4.linux-amd64.tar.gz" | sha256sum -c - && \
     tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz && \
     rm go1.23.4.linux-amd64.tar.gz
 
-# download and install kubectl 
-RUN curl -o /usr/local/bin/kubectl -LO 'https://dl.k8s.io/release/v1.30.4/bin/linux/amd64/kubectl' && \
+# download and install kubectl (sha256 pinned)
+RUN curl --proto '=https' --tlsv1.2 -fsSLo /usr/local/bin/kubectl 'https://dl.k8s.io/release/v1.30.4/bin/linux/amd64/kubectl' && \
+    echo "2ffd023712bbc1a9390dbd8c0c15201c165a69d394787ef03eda3eccb4b9ac06  /usr/local/bin/kubectl" | sha256sum -c - && \
     chmod +x /usr/local/bin/kubectl
 
 # download and install helm

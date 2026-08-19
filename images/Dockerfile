@@ -32,8 +32,11 @@ RUN mkdir -p /export/bin /export/lib64 /export/nicctl-versions && \
         if [[ "$FOUND" != "true" ]]; then echo "ERROR: BOOTSTRAP_VERSION '$BOOTSTRAP' not in AINIC_VERSIONS" && exit 1; fi; \
     fi && \
     echo "$BOOTSTRAP" > /etc/dnf/vars/amdainicver && \
-    curl -sSL -o /etc/yum.repos.d/amdainic.repo "https://repo.radeon.com/amdainic/pensando/${DIST}/amdainic-${DIST}.repo" && \
-    curl -L -o /tmp/dtc.rpm https://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/Packages/d/dtc-1.6.0-7.el9.x86_64.rpm && \
+    curl --proto '=https' --tlsv1.2 -fsSL -o /etc/yum.repos.d/amdainic.repo "https://repo.radeon.com/amdainic/pensando/${DIST}/amdainic-${DIST}.repo" && \
+    curl --proto '=https' --tlsv1.2 -fsSL -o /etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9 https://download.rockylinux.org/pub/rocky/RPM-GPG-KEY-Rocky-9 && \
+    rpmkeys --import /etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9 && \
+    curl --proto '=https' --tlsv1.2 -fsSL -o /tmp/dtc.rpm https://download.rockylinux.org/pub/rocky/9/AppStream/x86_64/os/Packages/d/dtc-1.6.0-7.el9.x86_64.rpm && \
+    rpm --checksig /tmp/dtc.rpm && \
     rpm -ivh --nodeps /tmp/dtc.rpm && rm -f /tmp/dtc.rpm && \
     microdnf update -y && \
     microdnf install -y binutils-2.35.2 xz-5.2.5 && microdnf clean all && \
