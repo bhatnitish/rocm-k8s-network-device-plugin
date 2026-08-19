@@ -40,9 +40,11 @@ RUN curl --proto '=https' --tlsv1.2 -fsSLo /usr/local/bin/kubectl 'https://dl.k8
     echo "2ffd023712bbc1a9390dbd8c0c15201c165a69d394787ef03eda3eccb4b9ac06  /usr/local/bin/kubectl" | sha256sum -c - && \
     chmod +x /usr/local/bin/kubectl
 
-# download and install helm
-RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
-    chmod 700 get_helm.sh && ./get_helm.sh
+# download and install helm (pinned release + sha256 verified)
+RUN curl --proto '=https' --tlsv1.2 -fsSL -o helm.tar.gz https://get.helm.sh/helm-v3.21.4-linux-amd64.tar.gz && \
+    echo "61f88ab166748cb19604d7884cb100ae9ccb13804ddeb98e08af167eacbb6a14  helm.tar.gz" | sha256sum -c - && \
+    tar -xzf helm.tar.gz --strip-components=1 -C /usr/local/bin linux-amd64/helm && \
+    rm helm.tar.gz
 
 ARG INSECURE_REGISTRY
 RUN echo "INSECURE_REGISTRY is: $INSECURE_REGISTRY" && \
