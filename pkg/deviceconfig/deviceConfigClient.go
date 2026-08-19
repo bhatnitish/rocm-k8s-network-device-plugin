@@ -131,8 +131,9 @@ func (dc *DevConfigClient) setupDevice(deviceID string) error {
 	}
 
 	glog.Infof("configuring devID %v, intf UUID %v", deviceID, intfUUID)
-	qpClearCmd := fmt.Sprintf("nicctl clear rdma internal queue-pair --lif %s", intfUUID)
-	cmdResp, err := dc.execWithContext(qpClearCmd, configClientTimeoutInSecs)
+	qpClearArgs := []string{"clear", "rdma", "internal", "queue-pair", "--lif", intfUUID}
+	qpClearCmd := configClientBinary + " " + strings.Join(qpClearArgs, " ")
+	cmdResp, err := dc.execWithContext(configClientTimeoutInSecs, configClientBinary, qpClearArgs...)
 	if err != nil {
 		err = fmt.Errorf("failed to execute QP clear command: %v", err)
 		glog.Errorf("%v", err)
@@ -173,11 +174,11 @@ func (dc *DevConfigClient) getUUID(deviceID string) (string, error) {
 	return intfUUID, nil
 }
 
-func (dc *DevConfigClient) execWithContext(cmd string, timeoutPeriod time.Duration) ([]byte, error) {
+func (dc *DevConfigClient) execWithContext(timeoutPeriod time.Duration, name string, args ...string) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), timeoutPeriod*time.Second)
 	defer cancel()
 
-	command := exec.CommandContext(ctx, "/bin/sh", "-c", cmd) // bash ??
+	command := exec.CommandContext(ctx, name, args...)
 	return command.Output()
 }
 
@@ -204,8 +205,9 @@ func (dc *DevConfigClient) updateDevIDmap() (map[string]string, error) {
 		glog.Infof("updating DevIDmap \n")
 	}
 
-	showCardDeviceCmd := "nicctl show card device -j"
-	cmdResp, err := dc.execWithContext(showCardDeviceCmd, configClientTimeoutInSecs)
+	showCardDeviceArgs := []string{"show", "card", "device", "-j"}
+	showCardDeviceCmd := configClientBinary + " " + strings.Join(showCardDeviceArgs, " ")
+	cmdResp, err := dc.execWithContext(configClientTimeoutInSecs, configClientBinary, showCardDeviceArgs...)
 	if err != nil {
 		err = fmt.Errorf("failed to get device HW data: %v", err)
 		glog.Errorf("%v", err)
