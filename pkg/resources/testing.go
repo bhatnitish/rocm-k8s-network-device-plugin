@@ -91,7 +91,7 @@ func (s *fakeRegistrationServer) registerPlugin() error {
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -150,7 +150,7 @@ func (s *fakeRegistrationServer) waitForServer(timeout time.Duration) error {
 
 func (s *fakeRegistrationServer) stop() {
 	s.grpcServer.Stop()
-	os.Remove(pluginapi.DevicePluginPath)
+	_ = os.Remove(pluginapi.DevicePluginPath)
 }
 
 // Implementation of pluginapi.DevicePlugin_ListAndWatchServer for use in tests.

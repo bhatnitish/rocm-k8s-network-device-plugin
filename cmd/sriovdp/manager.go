@@ -215,7 +215,7 @@ func (rm *resourceManager) validConfigs() bool {
 		}
 
 		// resourcePrefix might be overridden for a given resource pool
-		resourcePrefix := rm.cliParams.resourcePrefix
+		resourcePrefix := rm.resourcePrefix
 		if conf.ResourcePrefix != "" {
 			resourcePrefix = conf.ResourcePrefix
 		}

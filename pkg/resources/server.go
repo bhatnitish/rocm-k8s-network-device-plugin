@@ -121,7 +121,7 @@ func (rs *resourceServer) register() error {
 		glog.Errorf("%s device plugin unable connect to Kubelet : %v", rs.resourcePool.GetResourceName(), err)
 		return err
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 	client := pluginapi.NewRegistrationClient(conn)
 
 	request := &pluginapi.RegisterRequest{

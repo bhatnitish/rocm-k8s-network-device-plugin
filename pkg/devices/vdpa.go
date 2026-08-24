@@ -32,7 +32,7 @@ type vdpaDevice struct {
 
 // GetType returns the VdpaType associated with the VdpaDevice
 func (v *vdpaDevice) GetType() types.VdpaType {
-	currentDriver := v.VdpaDevice.Driver()
+	currentDriver := v.Driver()
 	for vtype, driver := range types.SupportedVdpaTypes {
 		if driver == currentDriver {
 			return vtype
@@ -42,7 +42,7 @@ func (v *vdpaDevice) GetType() types.VdpaType {
 }
 
 func (v *vdpaDevice) GetParent() string {
-	return v.VdpaDevice.Name()
+	return v.Name()
 }
 
 func (v *vdpaDevice) GetPath() (string, error) {
