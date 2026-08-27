@@ -65,7 +65,7 @@ spec:
       serviceAccountName: network-device-plugin-sa
       containers:
       - name: network-device-plugin
-        image: docker.io/rocm/k8s-network-device-plugin:v1.2.0
+        image: docker.io/rocm/k8s-network-device-plugin:v1.2.1
         imagePullPolicy: IfNotPresent
         args:
         - "--log-dir=networkdp"
