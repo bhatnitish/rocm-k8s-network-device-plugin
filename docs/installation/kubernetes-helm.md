@@ -16,7 +16,7 @@ Refer to the [README](../../README.md) for more details on these runtime prerequ
 
 ### Multi-Version Image Support
 
-Starting with v1.3.0, container images support multiple nicctl versions bundled together. This allows a single image to work across clusters with different NIC firmware versions through automatic firmware detection at startup. See the [README Multi-Version nicctl Support](../../README.md#multi-version-nicctl-support) section for build details.
+Starting with v1.2.1, container images support multiple nicctl versions bundled together. This allows a single image to work across clusters with different NIC firmware versions through automatic firmware detection at startup. See the [README Multi-Version nicctl Support](../../README.md#multi-version-nicctl-support) section for build details.
 
 ## Installation
 
@@ -33,7 +33,7 @@ helm repo update
 helm install amd-network-device-plugin rocm-network-dp/network-device-plugin-charts \
   --namespace kube-amd-network \
   --create-namespace \
-  --version v1.2.0
+  --version v1.2.1
 ```
 
 ### Verify the installation
@@ -70,7 +70,7 @@ To schedule the Device Plugin DaemonSet pods on nodes with a custom taint, add t
 helm install amd-network-device-plugin rocm-network-dp/network-device-plugin-charts \
   --namespace kube-amd-network \
   --create-namespace \
-  --version v1.2.0 \
+  --version v1.2.1 \
   --set tolerations[0].key=example.com/foo \
   --set tolerations[0].operator=Exists \
   --set tolerations[0].effect=NoSchedule
@@ -89,7 +89,7 @@ tolerations:
 helm install amd-network-device-plugin rocm-network-dp/network-device-plugin-charts \
   --namespace kube-amd-network \
   --create-namespace \
-  --version v1.2.0 \
+  --version v1.2.1 \
   -f my-values.yaml
 ```
 
@@ -99,7 +99,7 @@ Use the `--debug` flag with `helm install` or `helm template` to see the fully r
 
 ```bash
 helm template amd-network-device-plugin rocm-network-dp/network-device-plugin-charts \
-  --version v1.2.0 \
+  --version v1.2.1 \
   --debug \
   -f my-values.yaml
 ```
@@ -110,7 +110,7 @@ Use `--dry-run` with `helm install` to simulate the installation without applyin
 helm install amd-network-device-plugin rocm-network-dp/network-device-plugin-charts \
   --namespace kube-amd-network \
   --create-namespace \
-  --version v1.2.0 \
+  --version v1.2.1 \
   --dry-run \
   -f my-values.yaml
 ```

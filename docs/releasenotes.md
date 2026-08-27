@@ -1,5 +1,22 @@
 # Network Device Plugin Release Notes
 
+## v1.2.1
+
+### New Features
+
+- **Multi-Version nicctl Bundling**: Container images now bundle multiple nicctl versions (up to 5) with automatic firmware detection at runtime. Eliminates compatibility issues when deploying across clusters with different NIC firmware versions.
+- **OpenShift 4.21 Support**: Added compatibility with Red Hat OpenShift Container Platform 4.21.
+
+### Improvements
+
+- **Enhanced Firmware Detection**: Improved handling of partial NIC failures during firmware detection, ensuring plugin continues operation even when individual NICs fail.
+- **Build Artifact Integrity**: Added checksum validation for downloaded nicctl binaries during image build.
+
+### Bug Fixes
+
+- **Command Execution Security**: Fixed shell injection vulnerability in command execution.
+- **Partial NIC Failure Handling**: Resolved plugin crashes when firmware detection fails on individual NICs.
+
 ## v1.2.0
 
 ### New Features
